@@ -1,0 +1,38 @@
+{
+    "name": "karunais13/jwt-helper",
+    "description": "JWT Helper based on firebase\n/\nphp-jwt for laravel & lumen ",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Karunaiswaran Sivaguru",
+            "email": "karunais1392@gmail.com"
+        }
+    ],
+    "require": {
+        "php" : ">=5.4.0",
+        "illuminate/config": ">= 5.0.0",
+        "illuminate/support" : ">= 5.0.0",
+        "firebase/php-jwt" : "^5.2"
+    },
+    "require-dev" : {
+        "phpunit/phpunit" : ">=4.0",
+        "mockery/mockery" : "dev-master"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Karu\\JWTHelper\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Karu\\JWTHelper\\JWTHelperProvider"
+            ],
+            "aliases": {
+                "JWTHelper": "Karu\\JWTHelper\\Facades\\JWTHelperFacades"
+            }
+        }
+    }
+}
