@@ -1,6 +1,6 @@
 {
     "name": "karunais13/jwt-helper",
-    "description": "JWT Helper based on firebase\n/\nphp-jwt for laravel & lumen ",
+    "description": "JWT Helper based on firebase php-jwt for laravel & lumen ",
     "type": "library",
     "license": "MIT",
     "authors": [
