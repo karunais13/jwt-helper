@@ -7,6 +7,6 @@ class JWTHelperFacades extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'Karu\JWTHelper\Helpers\JWTHelper';
+        return '\Karu\JWTHelper\Helpers\JWTHelper';
     }
 }

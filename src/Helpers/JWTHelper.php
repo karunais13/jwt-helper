@@ -25,7 +25,7 @@ class JWTHelper
 
         $this->setAlgorithms($algorithms);
 
-        $decoded = JWT::decode($token, $this->getKey(false), [$this->alg]);
+        $decoded = JWT::decode($token, $this->getKey(), [$this->alg]);
 
         return (array)$decoded;
     }
@@ -68,8 +68,25 @@ class JWTHelper
         }
     }
 
-    private function setPayload($payload)
+    private function setPayload($publicClaim)
     {
+
+        $min = config('jwttoken.claims.exp') ?? 5;
+
+        $registeredCliam = [
+            'iss' => config('jwttoken.claims.iss'),
+            'exp' => strtotime("+{$min} minutes"),
+            'sub' => config('jwttoken.claims.sub'),
+            'nbf' => time(),
+            'iat' => time()
+        ];
+
+        if( !is_array($publicClaim) ){
+            $publicClaim = is_object($publicClaim) ? (array)$publicClaim : [$publicClaim];
+        }
+
+        $payload = array_merge($registeredCliam, $publicClaim);
+
         $this->payload = $payload;
 
         return $this->payload;
