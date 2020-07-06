@@ -1,5 +1,5 @@
 <?php
-namespace Karu\CustomSignature\Facades;
+namespace Karu\JWTHelper\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
