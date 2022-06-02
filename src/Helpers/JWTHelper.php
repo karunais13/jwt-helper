@@ -63,7 +63,7 @@ class JWTHelper
                 return $key;
                 break;
             default :
-                return null;
+                return config("jwttoken.{$this->alg}.public", null);
                 break;
         }
     }
@@ -95,9 +95,9 @@ class JWTHelper
     private function setAlgorithms($agl): void
     {
         if( is_array($agl) && count($agl) > 0 ){
-            $this->alg = !empty($agl[0]) ?  strtoupper($agl[0]) : config('jwttoken.default.algorithm');
+            $this->alg = !empty($agl[0]) ?  config("jwttoken.$agl[0].algorithm"): config('jwttoken.default.algorithm');
         }else{
-            $this->alg = !empty($agl) ? strtoupper($agl) : config('jwttoken.default.algorithm');
+            $this->alg = !empty($agl) ? config("jwttoken.$agl.algorithm") : config('jwttoken.default.algorithm');
         }
     }
 }
