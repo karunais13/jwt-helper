@@ -15,8 +15,8 @@ class JWTHelper
         $this->setPayload($payload);
 
         $this->setAlgorithms($algorithms);
-
-        return JWT::encode($this->payload, $this->getKey(false), $this->alg);
+        
+        return JWT::encode($this->payload, $this->getKey($algorithms, false), $this->alg);
     }
 
     public function decode($token, $algorithms=null): array
@@ -25,7 +25,7 @@ class JWTHelper
 
         $this->setAlgorithms($algorithms);
 
-        $decoded = JWT::decode($token, $this->getKey(), [$this->alg]);
+        $decoded = JWT::decode($token, $this->getKey($algorithms), [$this->alg]);
 
         return (array)$decoded;
     }
@@ -36,34 +36,36 @@ class JWTHelper
         return JWT::$leeway = config('jwttoken.leeway');
     }
 
-    private function getKey($decode=true)
+    private function getKey($algorithms, $decode=true)
     {
-        switch ($this->alg){
+        if(!isset($algorithms)) $algorithms = config('jwttoken.default.algorithm', 'HS256');
+        
+        switch ($algorithms){
             case 'HS256' :
             case 'HS384' :
             case 'HS512' :
-                return config("jwttoken.{$this->alg}.public");
+                return config("jwttoken.{$algorithms}.public");
                 break;
             case 'RS256' :
             case 'RS384' :
             case 'RS512' :
                 if( $decode ){
-                    if( config("jwttoken.{$this->alg}.is_path") ){
-                        $key = file_get_contents(config("jwttoken.{$this->alg}.public"));
+                    if( config("jwttoken.{$algorithms}.is_path") ){
+                        $key = file_get_contents(config("jwttoken.{$algorithms}.public"));
                     }else{
-                        $key = config("jwttoken.{$this->alg}.public");
+                        $key = config("jwttoken.{$algorithms}.public");
                     }
                 }else{
-                    if( config("jwttoken.{$this->alg}.is_path") ){
-                        $key = file_get_contents(config("jwttoken.{$this->alg}.private"));
+                    if( config("jwttoken.{$algorithms}.is_path") ){
+                        $key = file_get_contents(config("jwttoken.{$algorithms}.private"));
                     }else{
-                        $key = config("jwttoken.{$this->alg}.private");
+                        $key = config("jwttoken.{$algorithms}.private");
                     }
                 }
                 return $key;
                 break;
             default :
-                return config("jwttoken.{$this->alg}.public", null);
+                return config("jwttoken.{$algorithms}.public", null);
                 break;
         }
     }
