@@ -3,6 +3,7 @@
 namespace Karu\JWTHelper\Helpers;
 
 use \Firebase\JWT\JWT;
+use \Firebase\JWT\Key;
 
 class JWTHelper
 {
@@ -25,7 +26,7 @@ class JWTHelper
 
         $this->setAlgorithms($algorithms);
 
-        $decoded = JWT::decode($token, $this->getKey($algorithms), [$this->alg]);
+        $decoded = JWT::decode($token, new Key($this->getKey($algorithms), $this->alg));
 
         return (array)$decoded;
     }
